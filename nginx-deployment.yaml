@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-promtail
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /var/log/nginx
+          name: log-path
+      - name: promtail
+        image: promtail
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - mountPath: /var/log/nginx
+          name: log-path
+        - mountPath: /etc/promtail/config.yml
+          name: promtail-conf
+          subPath: promtail.conf
+      volumes:
+      - name: promtail-conf
+        configMap:
+          name: promtail-config
+      - name: log-path
+        emptyDir: {}

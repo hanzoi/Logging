@@ -26,4 +26,4 @@ data:
             pod_namespace: ${POD_NAMESPACE:unknown}
             pod_name: ${POD_NAME:unknown}
             service: ${SERVICE_NAME:unknown}
-            __path__: /var/log/nginx/host.access.log
+            __path__: /var/log/nginx/access.log
